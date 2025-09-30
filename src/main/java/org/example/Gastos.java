@@ -1,30 +1,29 @@
 package org.example;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class Gastos {
 
-    private String desgricao;
+    private String descricao;
     private double valorGasto;
     private  String categoria;
     private LocalDate data;
-    private String forma_Pagamneto;
-    private float valorParcelas;
+    private String formaPagamento;
+    private double valorParcelas;
     private int parcelas;
 
-    public Gastos(String desgricao, double valor, String categoria, String formaPagamento, LocalDate data,  float valorParcelas , int parcelas) {
-        this.desgricao = desgricao;
-        this.valorGasto = valor;
+    public Gastos(String descricao, double valorGasto, String categoria, String formaPagamento, double valorParcelas, LocalDate data, int parcelas) {
+        this.descricao = descricao;
+        this.valorGasto = valorGasto;
         this.categoria = categoria;
         this.data = data;
         this.valorParcelas = valorParcelas ;
-        this.forma_Pagamneto = formaPagamento;
+        this.formaPagamento = formaPagamento;
         this.parcelas = parcelas;
 
     }
-    public  String getDesgricao(){
-        return desgricao;
+    public  String getDescricao(){
+        return descricao;
     }
     public double getValorGasto(){
         return valorGasto;
@@ -35,10 +34,10 @@ public class Gastos {
     public LocalDate getData(){
         return data;
     }
-    public String getForma_Pagamneto(){
-        return forma_Pagamneto;
+    public String getFormaPagamento(){
+        return formaPagamento;
     }
-    public float getValorParcelas(){
+    public Double getValorParcelas(){
         return valorParcelas;
     }
     public int getParcelas(){
@@ -47,11 +46,17 @@ public class Gastos {
 
     @Override
     public String toString(){
-        return desgricao + " | R$ " + valorGasto +
-                (valorParcelas > 0 ? String.format(" | Parcela: R$ %.2f" , valorParcelas) : "") + " De " + parcelas + " vezes "+
+
+        String parcelasInfo = "";
+        if (formaPagamento.equalsIgnoreCase("CRÉDITO") && valorParcelas > 0){
+            parcelasInfo = String.format("  | Parcela: R$ %.2f de %d vezes", valorParcelas , parcelas);
+        }
+
+        return descricao + String.format(" | R$ %.2f" , valorGasto ) +
+                parcelasInfo + " | " + formaPagamento +
                 " | CATEGORIA: " + categoria +
-                " | " + data +
-                " | " + forma_Pagamneto;
+                " | " + data;
+
     }
 
  }
