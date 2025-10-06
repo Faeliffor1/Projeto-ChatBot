@@ -7,109 +7,134 @@ import java.util.Scanner;
 public class ChatBot {
     public static void main(String[] args) {
 
-
-
         IniciarBanco.criarTabela();
+
 
         Scanner sc = new Scanner(System.in);
 
-    while (true) {
+        while (true) {
 
-        System.out.println("== MENU INICIAL ==");
-        System.out.println("1 - Novo Gasto");
-        System.out.println("2 - Visualizar Gastos");
+            System.out.println("== MENU INICIAL ==");
+            System.out.println("1 - Novo Gasto");
+            System.out.println("2 - Visualizar Gastos");
+            System.out.println("3 - Confirmar como pago");
+            System.out.println("4 - Sair");
+            int escolha = sc.nextInt();
+            sc.nextLine();
 
-        System.out.println("3 - Sair");
-        int escolha = sc.nextInt();
-        sc.nextLine();
 
+            switch (escolha) {
+                case 1:
 
-        switch(escolha){
-            case 1:
+                    System.out.println("=== GASTOS ===");
 
-                System.out.println("=== GASTOS ===");
+                    System.out.print("Com o que Gastou? (Ex. UBER, LANCHE ...):  ");
+                    String descricao = sc.nextLine();
 
-                System.out.print("Com o que Gastou? (Ex. UBER, LANCHE ...):  ");
-                String descricao = sc.nextLine();
-
-                System.out.print("Valor gasto: ");
-                double valorGasto = sc.nextFloat();
-                sc.nextLine();
-
-                System.out.print("Categoria: (EX. ALIMENTAÇÃO, TRASPORTE ...): ");
-                String categoria = sc.nextLine();
-
-                System.out.println("Forma de pagamento: ");
-                System.out.println("1 - PIX");
-                System.out.println("2 - DÉBITO");
-                System.out.println("3 - CRÉDITO");
-                System.out.println("4 - DINHEIRO");
-                System.out.println("5 - BOLETO");
-                int formaPagamentoOpcao = sc.nextInt();
-                sc.nextLine();
-
-                String formaPagamento = switch (formaPagamentoOpcao){
-                    case 1 -> "PIX";
-                    case 2 -> "DÉBITO";
-                    case 3 -> "CRÉDITO";
-                    case 4 -> "DINHEIRO";
-                    case 5 -> "BOLETO";
-                    default -> "Desconhecido";
-                };
-
-                double valorParcela = 0;
-                int parcelas = 0;
-
-                if (formaPagamento.equals("CRÉDITO")){
-                    System.out.println("Quantas parcelas: ");
-                    parcelas = sc.nextInt();
+                    System.out.print("Valor gasto: ");
+                    double valorGasto = sc.nextFloat();
                     sc.nextLine();
 
-                    if (parcelas > 0){
-                    valorParcela = valorGasto / parcelas;
+                    System.out.print("Categoria: (EX. ALIMENTAÇÃO, TRASPORTE ...): ");
+                    String categoria = sc.nextLine();
 
-                    }else
-                        valorParcela = 0;
-                }
+                    System.out.println("Forma de pagamento: ");
+                    System.out.println("1 - PIX");
+                    System.out.println("2 - DÉBITO");
+                    System.out.println("3 - CRÉDITO");
+                    System.out.println("4 - DINHEIRO");
+                    System.out.println("5 - BOLETO");
+                    int formaPagamentoOpcao = sc.nextInt();
+                    sc.nextLine();
 
-                System.out.print("Ano: ");
-                int ano = sc.nextInt();
-                System.out.print("Mes: ");
-                int mes = sc.nextInt();
-                System.out.print("Dia: ");
-                int dia = sc.nextInt();
+                    String formaPagamento = switch (formaPagamentoOpcao) {
+                        case 1 -> "PIX";
+                        case 2 -> "DÉBITO";
+                        case 3 -> "CRÉDITO";
+                        case 4 -> "DINHEIRO";
+                        case 5 -> "BOLETO";
+                        default -> "Desconhecido";
+                    };
 
-                LocalDate data = LocalDate.of(ano, mes, dia);
+                    double valorParcela = 0;
+                    int parcelas = 0;
 
-                Gastos gastos =  new Gastos(descricao, valorGasto,categoria,formaPagamento, valorParcela,data,parcelas);
-                GastosDAO.salvar(gastos);
-                System.out.println("Gastos cadastrados: " + gastos);
-                sc.nextLine();
-                break;
+                    if (formaPagamento.equals("CRÉDITO")) {
+                        System.out.println("Quantas parcelas: ");
+                        parcelas = sc.nextInt();
+                        sc.nextLine();
 
-            case 2:
-                System.out.println("=== GASTOS ===");
-                List<Gastos> gastos1 = GastosDAO.listar();
-                for (int i = 0; i < gastos1.size(); i++) {
-                    System.out.println(i + 1 + " - " + gastos1.get(i));
-                    System.out.println("=".repeat(80));
-                }break;
+                        if (parcelas > 0) {
+                            valorParcela = valorGasto / parcelas;
 
-            case 3:
-                 System.out.println("Saindo... Até mais tarde");
-                 return;
+                        } else
+                            valorParcela = 0;
+                    }
 
-            default:
-                throw new IllegalStateException("Unexpected value: " + escolha);
+                    System.out.print("Ano: ");
+                    int ano = sc.nextInt();
+                    System.out.print("Mes: ");
+                    int mes = sc.nextInt();
+                    System.out.print("Dia: ");
+                    int dia = sc.nextInt();
+
+                    LocalDate data = LocalDate.of(ano, mes, dia);
+
+                    Gastos gastos = new Gastos(descricao, valorGasto, categoria, formaPagamento, valorParcela, data, parcelas);
+                    GastosDAO.salvar(gastos);
+                    System.out.println("Gastos cadastrados: " + gastos);
+                    sc.nextLine();
+                    break;
+
+                case 2:
+                    if (GastosDAO.listar().isEmpty()) {
+                        System.out.println("Nenhum gasto encontrado");
+                        continue;
+                    }
+                    System.out.println("=== GASTOS ===");
+                    List<Gastos> gastos1 = GastosDAO.listar();
+                    for (int i = 0; i < gastos1.size(); i++) {
+                        System.out.println(i + 1 + " - " + gastos1.get(i));
+                        System.out.println("=".repeat(80));
+                    }
+                    break;
+
+                case 3:
+
+                    List<Gastos> lista = GastosDAO.listar();
+
+                    if (lista.isEmpty()) {
+                        System.out.println("Nenhum gasto encontrado");
+                    }
+
+                    for (int i = 0; i < lista.size(); i++) {
+                        System.out.println(i + 1 + " - " + lista.get(i));
+                    }
+
+                    System.out.println("Digite um número para marcar como pago: ");
+                    int pago = sc.nextInt();
+                    sc.nextLine();
+
+                    if (pago > 0 && pago <= lista.size()) {
+                        int id = lista.get(pago -1).getId();
+                        GastosDAO.marcarComoPago(id);
+                    } else {
+                        System.out.println("Indíce Inválido");
+                    }
+                    break;
+
+
+
+
+                case 4:
+                    System.out.println("Até mais tarde ...");
+                    return;
+
+                default:
+                    throw new IllegalStateException("Unexpected value: " + escolha);
+
+
+            }
         }
-
-
-    }
-
-
-
-
-
-
     }
 }

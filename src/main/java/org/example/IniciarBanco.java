@@ -16,8 +16,8 @@ public class IniciarBanco {
                       formaPagamento TEXT,
                       data DATE,
                       valorParcelas REAL,
-                      parcelas INTEGER
-                      
+                      parcelas INTEGER,
+                      pago BOOLEAN DEFAULT 0
                       )
                       
                       """;
@@ -30,4 +30,5 @@ public class IniciarBanco {
             System.out.println("Erro ao criar Tabela: " + e.getMessage());
         }
     }
+
 }

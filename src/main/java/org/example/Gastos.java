@@ -11,6 +11,8 @@ public class Gastos {
     private String formaPagamento;
     private double valorParcelas;
     private int parcelas;
+    private boolean pago;
+    private int id;
 
     public Gastos(String descricao, double valorGasto, String categoria, String formaPagamento, double valorParcelas, LocalDate data, int parcelas) {
         this.descricao = descricao;
@@ -20,9 +22,26 @@ public class Gastos {
         this.valorParcelas = valorParcelas ;
         this.formaPagamento = formaPagamento;
         this.parcelas = parcelas;
+        this.pago = false;
 
     }
+
+    public Gastos(String descricao, double valorGasto,String categoria, LocalDate data, String formaPagamento, double valorParcelas, int parcelas, boolean pago, int id) {
+        this.descricao = descricao;
+        this.valorGasto = valorGasto;
+        this.categoria = categoria;
+        this.data = data;
+        this.valorParcelas = valorParcelas;
+        this.formaPagamento = formaPagamento;
+        this.parcelas = parcelas;
+        this.pago = pago;
+        this.id=id;
+
+    }
+
+
     public  String getDescricao(){
+
         return descricao;
     }
     public double getValorGasto(){
@@ -43,20 +62,29 @@ public class Gastos {
     public int getParcelas(){
         return parcelas;
     }
+    public boolean getPago(){
+        return pago;
+    }
+    public int getId(){
+        return id;
+    }
 
     @Override
     public String toString(){
 
+        String status = pago ? "[PAGO]" : "[NÃO PAGO]";
+
         String parcelasInfo = "";
-        if (formaPagamento.equalsIgnoreCase("CRÉDITO") && valorParcelas > 0){
+        if ("CRÉDITO".equalsIgnoreCase(formaPagamento) && valorParcelas > 0){
             parcelasInfo = String.format("  | Parcela: R$ %.2f de %d vezes", valorParcelas , parcelas);
         }
 
         return descricao + String.format(" | R$ %.2f" , valorGasto ) +
                 parcelasInfo + " | " + formaPagamento +
                 " | CATEGORIA: " + categoria +
-                " | " + data;
+                " | " + data + " | " + status;
 
     }
 
- }
+
+}
