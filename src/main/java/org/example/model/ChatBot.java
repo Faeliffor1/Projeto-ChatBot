@@ -1,4 +1,7 @@
-package org.example;
+package org.example.model;
+
+import org.example.dao.GastosDAO;
+import org.example.dao.IniciarBanco;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +21,8 @@ public class ChatBot {
             System.out.println("1 - Novo Gasto");
             System.out.println("2 - Visualizar Gastos");
             System.out.println("3 - Confirmar como pago");
-            System.out.println("4 - Sair");
+            System.out.println("4 - Excluir gasto");
+            System.out.println("5 - Sair");
             int escolha = sc.nextInt();
             sc.nextLine();
 
@@ -122,11 +126,27 @@ public class ChatBot {
                         System.out.println("Indíce Inválido");
                     }
                     break;
-
-
-
-
                 case 4:
+                    if (GastosDAO.listar().isEmpty()) {
+                        System.out.println("Nenhum gasto encontrado");
+                        continue;
+                    }else {
+
+                        List<Gastos> lista2 = GastosDAO.listar();
+                        for (int i = 0; i < lista2.size(); i++) {
+                            System.out.println(i + 1 + " - " + lista2.get(i));
+                        }
+
+                        System.out.println("Qual gasto deseja apagar: ");
+                        int id = sc.nextInt();
+                        GastosDAO.deletar(id);
+                    }break;
+
+
+
+
+
+                case 5:
                     System.out.println("Até mais tarde ...");
                     return;
 

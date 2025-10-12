@@ -31,7 +31,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.example.ChatBot</mainClass>
+                            <mainClass>org.example.model.ChatBot</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

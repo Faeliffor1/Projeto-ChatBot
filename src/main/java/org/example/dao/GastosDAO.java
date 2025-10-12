@@ -1,4 +1,6 @@
-package org.example;
+package org.example.dao;
+
+import org.example.model.Gastos;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -12,7 +14,7 @@ public class GastosDAO {
     public static void salvar (Gastos g){
         String sql = "INSERT INTO Gastos(descricao,valor,categoria,formaPagamento,data,valorParcelas,parcelas,pago) VALUES(?,?,?,?,?,?,?,?)";
         try (Connection conexao = Conexao.conectar();
-            PreparedStatement pstmt = conexao.prepareStatement(sql)){
+             PreparedStatement pstmt = conexao.prepareStatement(sql)){
             pstmt.setString(1, g.getDescricao());
             pstmt.setDouble(2, g.getValorGasto());
             pstmt.setString(3, g.getCategoria());
@@ -70,8 +72,17 @@ public class GastosDAO {
         }catch (SQLException e){
             System.out.println("Erro ao marcar como pago: " + e.getMessage());
         }
+    }
 
-
-
+    public static void deletar(int id){
+        String sql = "DELETE FROM Gastos WHERE id = ?";
+        try(Connection conexao = Conexao.conectar();
+            PreparedStatement pstmt = conexao.prepareStatement(sql)){
+            pstmt.setInt(1,id);
+            pstmt.executeUpdate();
+            System.out.println("Gasto deletado");
+        }catch (SQLException e){
+            System.out.println("Erro ao deletar: " + e.getMessage());
+        }
     }
 }

@@ -1,4 +1,4 @@
-package org.example;
+package org.example.model;
 
 import java.time.LocalDate;
 
@@ -14,6 +14,7 @@ public class Gastos {
     private boolean pago;
     private int id;
 
+    //CONSTRUTOR PARA A MAIN
     public Gastos(String descricao, double valorGasto, String categoria, String formaPagamento, double valorParcelas, LocalDate data, int parcelas) {
         this.descricao = descricao;
         this.valorGasto = valorGasto;
@@ -26,6 +27,7 @@ public class Gastos {
 
     }
 
+    // CONSTRUTOR PARA O SQLLITE
     public Gastos(String descricao, double valorGasto,String categoria, LocalDate data, String formaPagamento, double valorParcelas, int parcelas, boolean pago, int id) {
         this.descricao = descricao;
         this.valorGasto = valorGasto;
